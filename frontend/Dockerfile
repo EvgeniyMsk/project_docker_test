@@ -17,3 +17,4 @@ USER node
 FROM nginx as production
 COPY --chown=node:node nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /usr/src/app/dist/frontend/browser /etc/nginx/html
+EXPOSE 80
