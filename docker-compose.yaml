@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:14
+    container_name: "cnt_database"
+    restart: always
+    volumes:
+      - /var/app/database:/var/lib/postgresql/data
+    env_file:
+      - prod.env
+    environment:
+      TZ: Europe/Moscow
+    logging:
+      driver: "syslog"
+      options:
+        tag: "app_database_log"
+    ports:
+      - 5432:5432
+  backend:
+    build: ./backend
+    container_name: "cnt_backend"
+    restart: always
+    volumes:
+      - /var/app/backend:/etc/backend
+    env_file:
+      - prod.env
+    environment:
+      TZ: Europe/Moscow
+    logging:
+      driver: "syslog"
+      options:
+        tag: "app_backend_log"
+    ports:
+      - 3000:3000
+  frontend:
+    build: ./frontend
+    container_name: "cnt_frontend"
+    restart: always
+    env_file:
+      - prod.env
+    environment:
+      TZ: Europe/Moscow
+    logging:
+      driver: "syslog"
+      options:
+        tag: "app_frontend_log"
+    ports:
+      - 80:4200
